@@ -10,7 +10,7 @@ namespace CSHARP
         static void Main()
         {
 
-            Console.WriteLine("Welcome to the game of card-based luck!\n___________________________________");
+            Console.WriteLine("Welcome to the game of card-based luck!\n___________________________________\n");
 
 
             using (var reader = new StreamWriter(@"winners.csv"))
