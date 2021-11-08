@@ -189,10 +189,7 @@ namespace CSHARP
 
             SortList(ref scores, ref names);
 
-            foreach (var x in names)
-            {
-                Console.WriteLine(x);
-            }
+            
 
             Console.WriteLine("\nALL-TIME WINNERS:");
             for (int i = 0; i<5; i++)
