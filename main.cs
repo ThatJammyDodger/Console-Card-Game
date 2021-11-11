@@ -101,104 +101,109 @@ namespace CSHARP
                 Console.WriteLine("\t===================================\n");
             }
 
-            while (cards.Deck.Count > 0)
+            void play()
             {
-                showStats();
-
-                Console.WriteLine($"{players[0]}, type 'draw' to take a card.");
-                Console.ReadLine();
-                string player1card = cards.drawCard();
-                Console.WriteLine($"Your card is {player1card}. \n\nLet's give {players[1]} a go too now.");
-
-                Console.WriteLine($"{players[1]}, type 'draw' to take a card.");
-                Console.ReadLine();
-                string player2card = cards.drawCard();
-
-                Console.WriteLine($"Your card is {player2card}. \n\nLet me just calculate the winner now.");
-                int winner = cards.calculateWinner(player1card, player2card);
-                Console.WriteLine($"The winner of that round is {players[winner - 1]}.");
-
-                cards.giveCards(winner, player1card, player2card);
-                Console.WriteLine("\n\n");
-            }
-
-
-
-            int finalWinner = cards.getFinalWinner();
-
-
-
-
-            Console.WriteLine("\nGAME OVER!\n\n__________________________________________________\n");
-            Console.WriteLine($"The final winner, as you probably already know, is ... *drumroll* ... {players[finalWinner - 1]}.");
-            Console.WriteLine("Their cards were:");
-
-
-
-
-
-            int WinnerNoOfCards=0;
-
-            if (finalWinner == 1)
-            {
-                foreach (string x in cards.Player1Cards)
+                cards.reset();
+                while (cards.Deck.Count > 0)
                 {
-                    Console.WriteLine($"\t{x}");
+                    showStats();
+
+                    Console.WriteLine($"{players[0]}, type 'draw' to take a card.");
+                    Console.ReadLine();
+                    string player1card = cards.drawCard();
+                    Console.WriteLine($"Your card is {player1card}. \n\nLet's give {players[1]} a go too now.");
+
+                    Console.WriteLine($"{players[1]}, type 'draw' to take a card.");
+                    Console.ReadLine();
+                    string player2card = cards.drawCard();
+
+                    Console.WriteLine($"Your card is {player2card}. \n\nLet me just calculate the winner now.");
+                    int winner = cards.calculateWinner(player1card, player2card);
+                    Console.WriteLine($"The winner of that round is {players[winner - 1]}.");
+
+                    cards.giveCards(winner, player1card, player2card);
+                    Console.WriteLine("\n\n");
                 }
-                WinnerNoOfCards = cards.Player1Cards.Count;
-            }
-            else if (finalWinner == 2)
-            {
-                foreach (string x in cards.Player2Cards)
+
+
+
+                int finalWinner = cards.getFinalWinner();
+
+
+
+
+                Console.WriteLine("\nGAME OVER!\n\n__________________________________________________\n");
+                Console.WriteLine($"The final winner, as you probably already know, is ... *drumroll* ... {players[finalWinner - 1]}.");
+                Console.WriteLine("Their cards were:");
+
+
+
+
+
+                int WinnerNoOfCards = 0;
+
+                if (finalWinner == 1)
                 {
-                    Console.WriteLine($"\t{x}");
+                    foreach (string x in cards.Player1Cards)
+                    {
+                        Console.WriteLine($"\t{x}");
+                    }
+                    WinnerNoOfCards = cards.Player1Cards.Count;
                 }
-                WinnerNoOfCards = cards.Player2Cards.Count;
-            }
-
-
-
-
-
-
-
-            using (var reader = File.AppendText(@"winners.csv"))
-            {
-                reader.WriteLine($"{players[finalWinner - 1]},{WinnerNoOfCards}");
-            }
-
-            List<int> scores = new List<int>();
-            List<string> names = new List<string>();
-
-            using (var reader = new StreamReader(@"winners.csv"))
-            {
-                while (!reader.EndOfStream)
+                else if (finalWinner == 2)
                 {
-                    var line = reader.ReadLine();
-                    var values = line.Split(',');
-                    int value;
-                    int.TryParse(values[1], out value);
-                    names.Add(values[0]);
-                    scores.Add(value);
+                    foreach (string x in cards.Player2Cards)
+                    {
+                        Console.WriteLine($"\t{x}");
+                    }
+                    WinnerNoOfCards = cards.Player2Cards.Count;
                 }
+
+
+
+
+
+
+
+                using (var reader = File.AppendText(@"winners.csv"))
+                {
+                    reader.WriteLine($"{players[finalWinner - 1]},{WinnerNoOfCards}");
+                }
+
+                List<int> scores = new List<int>();
+                List<string> names = new List<string>();
+
+                using (var reader = new StreamReader(@"winners.csv"))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        var values = line.Split(',');
+                        int value;
+                        int.TryParse(values[1], out value);
+                        names.Add(values[0]);
+                        scores.Add(value);
+                    }
+                }
+
+
+
+
+
+                SortList(ref scores, ref names);
+
+
+
+                Console.WriteLine("\nALL-TIME WINNERS:");
+                for (int i = 0; i < 5; i++)
+                {
+                    Console.WriteLine($"{i + 1}) {names[i]} with a score of {scores[i]}.");
+                }
+
+
             }
 
-
-
-
-
-            SortList(ref scores, ref names);
-
-            
-
-            Console.WriteLine("\nALL-TIME WINNERS:");
-            for (int i = 0; i<5; i++)
-            {
-                Console.WriteLine($"{i + 1}) {names[i]} with a score of {scores[i]}.");
-            }
-
-
-
+            play();
 
             Console.ReadLine();
 

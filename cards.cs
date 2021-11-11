@@ -16,6 +16,13 @@ namespace CSHARP
 
     //METHODS
     
+    static public void reset()
+    {
+        shuffleDeck();
+        setDeck();
+        Player1Cards.Clear();
+        Player2Cards.Clear();
+    }
     static public void setDeck()
     {
       Deck.Clear();
